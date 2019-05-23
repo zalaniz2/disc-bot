@@ -14,6 +14,20 @@ public class PlayerController {
 		return service.selectAll();
 	}
 	
+	public int createPlayer(Player newPlayer) {
+		System.out.println("Creating new player..");
+		return service.createPlayer(newPlayer);
+	}
+	
+	public List<Player> selectPlayer(String id){
+		System.out.println("Grabbing player with id: " + id);
+		return service.selectPlayer(id);
+	}
+	public int deletePlayer(String id) {
+		System.out.println("Deleting player with id = " + id);
+		return service.deletePlayer(id);
+	}
+	
 
 	
 }

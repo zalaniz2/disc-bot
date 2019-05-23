@@ -13,5 +13,19 @@ public class PlayerService {
 		System.out.println("Service layer accessing DAO to do select all.");
 		return pd.selectAll();
 	}
+	
+	public int createPlayer(Player newPlayer) {
+		System.out.println("Service layer send Player to DB to be created..");
+		return pd.createPlayer(newPlayer);
+	}
+	
+	public List<Player> selectPlayer(String id){
+		System.out.println("Service layer getting player from DB.");
+		return pd.selectPlayer(id);
+	}
+	public int deletePlayer(String id) {
+		System.out.println("Service layer deleting player from DB.");
+		return pd.deletePlayer(id);
+	}
 
 }

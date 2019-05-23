@@ -22,5 +22,40 @@ public class PlayerDao {
 			throw new RuntimeException("Select all exception!");
 		}
 	}
+	
+	public List<Player> selectPlayer(String id) {
+		try {
+			String sql = "SELECT * FROM player where discid='"+id+"';" ;
+			List<Player> list = qr.query(sql, new BeanListHandler<>(Player.class));
+			return list;
+		}
+		catch(SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Select all exception!");
+		}
+	}
+	
+	public int createPlayer(Player newPlayer) {
+		try {
+			String sql = "INSERT INTO player(discid, username, money, lvl, exp, floor, map) VALUES ('" + newPlayer.getDiscid() + "','" + newPlayer.getUsername() + "'," + newPlayer.getMoney() + "," + newPlayer.getLvl() + "," + newPlayer.getExp() + "," + newPlayer.getFloor() + "," + newPlayer.getMap() + ");";
+			int p = qr.update(sql);
+			return p;
+		} 
+		catch (SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Create exception");
+		}
+	}
+	public int deletePlayer(String id) {
+		try {
+			String sql = "DELETE FROM player where discid='"+id+"';";
+			int p = qr.update(sql);
+			return p;
+		} 
+		catch (SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Create exception");
+		}
+	}
 
 }
