@@ -57,5 +57,18 @@ public class PlayerDao {
 			throw new RuntimeException("Create exception");
 		}
 	}
+	
+	public int updatePosition(Player p) {
+		try {
+			String sql = "UPDATE player SET map="+p.getMap() + " where discid='" + p.getDiscid() + "';";
+			int p1 = qr.update(sql);
+			return p1;
+
+		} 
+		catch (SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Update position exception.");
+		}
+	}
 
 }

@@ -1,5 +1,7 @@
 package discord.bot.domain;
 
+import discord.bot.Main;
+
 /**
  * JavaBean corresponding to the PLayer table in DB.
  * 
@@ -87,5 +89,28 @@ public class Player {
 	}
 	public void setMap(int map) {
 		this.map = map;
+	}
+	
+	public boolean canMoveRight() {
+		
+		boolean cm = false;
+		
+		if(  (getMap() + 1) <= Main.gb.getMaps() ) { 
+			setMap(getMap() + 1);
+			cm = true;
+		}
+		return cm;
+		
+	}
+	public boolean canMoveLeft() {
+		
+		boolean cm = false;
+		
+		if(  (getMap() - 1) > 0 ) { 
+			setMap(getMap() - 1);
+			cm = true;
+		}
+		return cm;
+		
 	}
 }

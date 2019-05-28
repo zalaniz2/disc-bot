@@ -23,9 +23,12 @@ public class Commands extends ListenerAdapter{
 											
 			event.getChannel().sendTyping().queue(); //pretend bot is typing 
 			event.getChannel().sendMessage("create <username>: Creates a character if you don't already have one.\n" +
-										"showplayers: Shows a list of all players. \n" +
-										"charinfo: Displays your current character's info. \n"+
-										"delete: Deletes your character if you have one."
+										   "showplayers: Shows a list of all players. \n" +
+										   "char: Displays your current character's info. \n"+
+										   "delete: Deletes your character if you have one. \n" +
+										   "world: Shows information about the game world.\n" +
+										   "left: move to the left on floor maps. \n" + 
+										   "right: move to the right on floor maps."
 			).queue();
 		
 		}
@@ -86,7 +89,7 @@ public class Commands extends ListenerAdapter{
 
 		}
 		
-		if( args[0].equalsIgnoreCase(Main.prefix + "charinfo") ) {
+		if( args[0].equalsIgnoreCase(Main.prefix + "char") ) {
 			
 			event.getChannel().sendTyping().queue(); //pretend bot is typing 
 			
@@ -127,6 +130,58 @@ public class Commands extends ListenerAdapter{
 			}
 			
 		}
+		
+		if( args[0].equalsIgnoreCase(Main.prefix + "world") ) {
+			event.getChannel().sendTyping().queue(); //pretend bot is typing 
+			
+			int f = Main.gb.getFloors();
+			int m = Main.gb.getMaps();
+			
+			event.getChannel().sendMessage("Your World Dimensions: " + f + "x" + m + "\n "
+					+ "5 Floors, 5 Maps per floor.").queue();
+
+			
+		}
+		
+		if( args[0].equalsIgnoreCase(Main.prefix + "left")) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing 
+			
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id);
+			Player thisPlayer = p.get(0);
+			
+			if( thisPlayer.canMoveLeft() ) {
+				event.getChannel().sendMessage("New spot: Floor " + thisPlayer.getFloor() + " Map " + thisPlayer.getMap()).queue();
+				int np = pc.updatePosition(thisPlayer);
+			}
+			else {
+				event.getChannel().sendMessage("You cannot move left anymore. Check your position on the floor with the ;char command.").queue();
+
+			}
+		}
+		
+		if( args[0].equalsIgnoreCase(Main.prefix + "right")) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing 
+			
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id);
+			Player thisPlayer = p.get(0);
+			
+			if( thisPlayer.canMoveRight() ) {
+				event.getChannel().sendMessage("New spot: Floor " + thisPlayer.getFloor() + " Map " + thisPlayer.getMap()).queue();
+				int np = pc.updatePosition(thisPlayer);
+			}
+			else {
+				event.getChannel().sendMessage("You cannot move right anymore. Check your position on the floor with the ;char command.").queue();
+
+			}
+		}
+		
+		
 		
 		
 	}
