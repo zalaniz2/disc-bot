@@ -91,26 +91,5 @@ public class Player {
 		this.map = map;
 	}
 	
-	public boolean canMoveRight() {
-		
-		boolean cm = false;
-		
-		if(  (getMap() + 1) <= Main.gb.getMaps() ) { 
-			setMap(getMap() + 1);
-			cm = true;
-		}
-		return cm;
-		
-	}
-	public boolean canMoveLeft() {
-		
-		boolean cm = false;
-		
-		if(  (getMap() - 1) > 0 ) { 
-			setMap(getMap() - 1);
-			cm = true;
-		}
-		return cm;
-		
-	}
+	
 }

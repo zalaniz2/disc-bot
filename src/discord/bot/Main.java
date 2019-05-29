@@ -2,7 +2,6 @@ package discord.bot;
 
 import discord.bot.commands.Commands;
 import discord.bot.controller.PlayerController;
-import discord.bot.domain.GameBoard;
 import discord.bot.domain.Player;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -19,14 +18,11 @@ public class Main {
 	
 	public static JDA jda;
 	public static String prefix = ";";
-	public static GameBoard gb = new GameBoard(5, 5); //new game instance
 
 
 	public static void main(String[] args) throws LoginException{
 		
-		
-		gb.createGameBoard(); //create game 
-		
+				
 		//build & connect to bot
 		jda = new JDABuilder(AccountType.BOT).setToken("NTgwODYwODY1NjA0MDkxOTEx.XOW3vg.Xc_SpFWGvk1OEWr3e8270sSMvoM").build(); 
 		

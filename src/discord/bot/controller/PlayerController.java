@@ -27,11 +27,6 @@ public class PlayerController {
 		System.out.println("Deleting player with id = " + id);
 		return service.deletePlayer(id);
 	}
-	public int updatePosition(Player p) {
-		System.out.println("Updating player position with username = " + p.getUsername());
-		return service.updatePosition(p);
-
-	}
 	
 
 	

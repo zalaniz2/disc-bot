@@ -27,10 +27,5 @@ public class PlayerService {
 		System.out.println("Service layer deleting player from DB.");
 		return pd.deletePlayer(id);
 	}
-	public int updatePosition(Player p) {
-		System.out.println("Service layer updating player in DB.");
-		return pd.updatePosition(p);
-
-	}
 
 }
