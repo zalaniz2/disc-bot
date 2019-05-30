@@ -19,9 +19,11 @@ public class Player {
 	private double exp;
 	private int floor;
 	private int map;
+	private int att;
+	private int def;
 
 	
-	public Player(int pid, String discordId, String pname, int money, int lvl, double exp, int floor, int map) {
+	public Player(int pid, String discordId, String pname, int money, int lvl, double exp, int floor, int map, int patt, int pdef) {
 		this.id = pid;
 		this.discid = discordId;
 		this.username = pname;
@@ -30,6 +32,8 @@ public class Player {
 		this.exp = exp;
 		this.floor = floor;
 		this.map = map;
+		this.att = patt;
+		this.def = pdef;
 		
 	}
 	
@@ -39,6 +43,8 @@ public class Player {
 		this.exp = 0.00;
 		this.floor = 1;
 		this.map = 1;
+		this.att = 5;
+		this.def = 5;
 	}
 		
 
@@ -89,6 +95,22 @@ public class Player {
 	}
 	public void setMap(int map) {
 		this.map = map;
+	}
+
+	public int getAtt() {
+		return att;
+	}
+
+	public void setAtt(int att) {
+		this.att = att;
+	}
+
+	public int getDef() {
+		return def;
+	}
+
+	public void setDef(int def) {
+		this.def = def;
 	}
 	
 	

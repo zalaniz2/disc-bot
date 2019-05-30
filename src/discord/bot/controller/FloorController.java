@@ -20,6 +20,11 @@ public class FloorController {
 		return service.selectAllFloorMaps(floor);
 		
 	}
+	
+	public List<Floor> selectFloor(int floor){
+		System.out.println("Getting floor " + floor + " info.");
+		return service.selectFloor(floor);
+	}
 
 
 }

@@ -19,6 +19,10 @@ public class FloorService {
 		System.out.println("Getting floor " + floor + " maps from DB.");
 		return fd.selectAllFloorMaps(floor);
 	}
+	public List<Floor> selectFloor(int floor){
+		System.out.println("Getting floor from DB.");
+		return fd.selectFloor(floor);
+	}
 
 
 }

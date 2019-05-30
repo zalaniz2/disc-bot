@@ -35,6 +35,18 @@ public class FloorDao {
 			throw new RuntimeException("Select all maps for floor exception.");
 		}
 	}
+	
+	public List<Floor> selectFloor(int floor) {
+		try {
+			String sql = "SELECT * FROM floor WHERE id="+ floor + ";";
+			List<Floor> list = qr.query(sql, new BeanListHandler<>(Floor.class));
+			return list;
+		}
+		catch(SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Select floor exception.");
+		}
+	}
 
 
 }

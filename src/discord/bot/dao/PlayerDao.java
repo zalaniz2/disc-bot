@@ -37,7 +37,7 @@ public class PlayerDao {
 	
 	public int createPlayer(Player newPlayer) {
 		try {
-			String sql = "INSERT INTO player(discid, username, money, lvl, exp, floor, map) VALUES ('" + newPlayer.getDiscid() + "','" + newPlayer.getUsername() + "'," + newPlayer.getMoney() + "," + newPlayer.getLvl() + "," + newPlayer.getExp() + "," + newPlayer.getFloor() + "," + newPlayer.getMap() + ");";
+			String sql = "INSERT INTO player(discid, username, money, lvl, exp, floor, map, att, def) VALUES ('" + newPlayer.getDiscid() + "','" + newPlayer.getUsername() + "'," + newPlayer.getMoney() + "," + newPlayer.getLvl() + "," + newPlayer.getExp() + "," + newPlayer.getFloor() + "," + newPlayer.getMap() + "," + newPlayer.getAtt() + "," + newPlayer.getDef() + ");";
 			int p = qr.update(sql);
 			return p;
 		} 
@@ -55,6 +55,17 @@ public class PlayerDao {
 		catch (SQLException ex) {
 			System.out.println(ex);
 			throw new RuntimeException("Create exception");
+		}
+	}
+	public int updatePosition(Player p) {
+		try {
+			String sql = "UPDATE player SET map=" + p.getMap() + " where discid='" + p.getDiscid() + "';";
+			int play = qr.update(sql);
+			return play;
+		} 
+		catch (SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Update position exception");
 		}
 	}
 
