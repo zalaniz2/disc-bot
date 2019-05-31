@@ -13,6 +13,11 @@ public class MonsterService {
 		System.out.println("Getting needed monsters from DB.");
 		return md.selectMonsters(floor, map);
 	}
+	public List<Monster> selectAll(){
+		System.out.println("Getting monsters from DB.");
+		return md.selectAll();
+
+	}
 
 
 }

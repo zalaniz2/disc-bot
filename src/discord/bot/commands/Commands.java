@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import discord.bot.Main;
-import discord.bot.controller.ArmorController;
+import discord.bot.controller.ItemController;
 import discord.bot.controller.FloorController;
 import discord.bot.controller.MonsterController;
 import discord.bot.controller.PlayerController;
-import discord.bot.domain.Armor;
+import discord.bot.domain.Item;
 import discord.bot.domain.Floor;
 import discord.bot.domain.Map;
 import discord.bot.domain.Monster;
@@ -21,7 +21,7 @@ public class Commands extends ListenerAdapter{
 	private PlayerController pc = new PlayerController();
 	private FloorController fc = new FloorController();
 	private MonsterController mc = new MonsterController();
-	private ArmorController ac = new ArmorController();
+	private ItemController ic = new ItemController();
 
 	
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
@@ -42,7 +42,9 @@ public class Commands extends ListenerAdapter{
 										   "monsterlist: Shows monsters available to fight on current map. \n" +
 										   "right: Move right to a new map. \n" +
 										   "left: Move left to a new map. \n" +
-										   "equips: Show's your current equipment."
+										   "equips: Shows your current equipment. \n" +
+										   "droplist: Shows what monster drops what items. \n" +
+										   "inventory: Shows what's in your current bag. \n"
 			).queue();
 		
 		}
@@ -118,7 +120,8 @@ public class Commands extends ListenerAdapter{
 			}
 			else {
 				event.getChannel().sendMessage("Your character info:\n").queue();
-				event.getChannel().sendMessage("Username: " + p.get(0).getUsername() + "\n Level: " + p.get(0).getLvl() + "\n Exp: " + p.get(0).getExp() + "% \n Money: " + p.get(0).getMoney() + "\n Location: Floor " + p.get(0).getFloor() + ", Map " + p.get(0).getMap() + "\n Attack: " + p.get(0).getAtt() + "\n Defense: " + p.get(0).getDef()).queue();
+				event.getChannel().sendMessage("Username: " + p.get(0).getUsername() + "\n Level: " + p.get(0).getLvl() + "\n Exp: " + p.get(0).getExp() + "% \n Money: " + p.get(0).getMoney() + "\n Location: Floor " + p.get(0).getFloor() + ", Map " + p.get(0).getMap() + "\n Attack: " + p.get(0).getAtt() + "\n Defense: " + 
+				p.get(0).getDef() + "\n Health: " + p.get(0).getHp() + "/" + p.get(0).getMaxhp() + "\n Floor Access: \n   1 = " + p.get(0).isFa1() + "\n   2 = " + p.get(0).isFa2()).queue();
 			}
 			
 			
@@ -195,7 +198,7 @@ public class Commands extends ListenerAdapter{
 			String monsterInfo = "Monsters in your map include: \n \n";
 			
 			for( int i = 0; i<monsters.size(); i++) {
-				monsterInfo += "Name: " + monsters.get(i).getName() + "\n Level: " + monsters.get(i).getLvl() + "\n Attack: " + monsters.get(i).getAtt() + "\n Defense: " + monsters.get(i).getDef() + "\n \n ";
+				monsterInfo += "Name: " + monsters.get(i).getName() + "\n   Level: " + monsters.get(i).getLvl() + "\n   Attack: " + monsters.get(i).getAtt() + "\n   Defense: " + monsters.get(i).getDef() + "\n   HP: " + monsters.get(i).getHp() + "\n   Coins: " + monsters.get(0).getCoins() + "\n \n ";
 			}
 			
 			event.getChannel().sendMessage(monsterInfo).queue();
@@ -263,19 +266,62 @@ public class Commands extends ListenerAdapter{
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
 			
-			List<Armor> arm = new ArrayList<Armor>();
+			List<Item> arm = new ArrayList<Item>();
 			
-			arm = ac.selectPlayerEquips(p.get(0));
+			arm = ic.selectPlayerEquips(p.get(0));
 			
 			String equipInfo = "Your currently equipped armor: \n \n";
 			
 			for( int i = 0; i<arm.size(); i++) {
-				equipInfo += "Name: " + arm.get(i).getName() + "\n Attack: " + arm.get(i).getAtt() + "\n Defense: " + arm.get(i).getDef() + "\n Type: " + arm.get(i).getType() + "\n \n";
+				equipInfo += "Name: " + arm.get(i).getName() + "\n Attack: " + arm.get(i).getAtt() + "\n Defense: " + arm.get(i).getDef() + "\n Type: " + arm.get(i).getType() + "\n Worth: " + arm.get(i).getWorth() + "\n Class: " + arm.get(i).getClassification() + "\n \n";
 			}
 			
 			event.getChannel().sendMessage(equipInfo).queue();
 
 		
+		}
+		
+		if( args[0].equalsIgnoreCase(Main.prefix + "droplist") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing)
+			
+			List<Monster> monsters = new ArrayList<Monster>();
+			monsters = mc.selectAll();
+			
+			for( int i = 0; i<monsters.size(); i++) {
+				
+				Monster m = monsters.get(i);
+				List<Item> drops = new ArrayList<Item>();
+				drops = ic.selectMonsterDrops(m);
+				event.getChannel().sendMessage("Monster: " + m.getName() + " drops- \n").queue();
+				
+				for( int j = 0; j<drops.size(); j++) {
+					event.getChannel().sendMessage("  Item: " + drops.get(j).getName() + "\n").queue();
+				}
+			}
+			
+			
+		}
+		
+		if( args[0].equalsIgnoreCase(Main.prefix + "inventory") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing)
+			
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			List<Item> inv = new ArrayList<Item>();
+			inv = ic.selectPlayerItems(p.get(0));
+			
+			String out = "Inventory: \n";
+			
+			for( int i = 0; i<inv.size(); i++) {
+				out += "  " + inv.get(i).getName() + "\n";
+			}
+			event.getChannel().sendMessage(out).queue();
+
+			
 		}
 
 

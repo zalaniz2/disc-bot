@@ -1,0 +1,31 @@
+package discord.bot.service;
+
+import java.util.List;
+
+import discord.bot.dao.ItemDao;
+import discord.bot.domain.Item;
+import discord.bot.domain.Monster;
+import discord.bot.domain.Player;
+
+public class ItemService {
+	
+	private ItemDao id = new ItemDao();
+	
+	public List<Item> selectPlayerEquips(Player p){
+		System.out.println("Getting player equips from DB.");
+		return id.selectPlayerEquips(p);
+	}
+	public List<Item> selectMonsterDrops(Monster m){
+		System.out.println("Getting drops from DB.");
+		return id.selectMonsterDrops(m);
+
+	}
+	public List<Item> selectPlayerItems(Player p){
+		System.out.println("Getting inventory.");
+		return id.selectPlayerItems(p);
+	}
+
+	
+	
+
+}

@@ -8,11 +8,14 @@ public class Monster {
     private int att;					
     private int def;					
     private int floor;					
-    private int map;		
+    private int map;	
+    private int hp;					
+    private boolean isboss;
+    private int coins;
     
     public Monster() {}
     
-    public Monster(int mid, String mname, int mlvl, int matt, int mdef, int mfloor, int mmap) {
+    public Monster(int mid, String mname, int mlvl, int matt, int mdef, int mfloor, int mmap, int mhp, boolean isboss, int mcoins) {
     	
     		this.setId(mid);
     		this.setName(mname);
@@ -21,6 +24,9 @@ public class Monster {
     		this.setDef(mdef);
     		this.setFloor(mfloor);
     		this.setMap(mmap);
+    		this.setHp(mhp);
+    		this.setIsboss(isboss);
+    		this.setCoins(mcoins);
     	
     }
 
@@ -78,6 +84,30 @@ public class Monster {
 
 	public void setMap(int map) {
 		this.map = map;
+	}
+
+	public int getHp() {
+		return hp;
+	}
+
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
+
+	public boolean isIsboss() {
+		return isboss;
+	}
+
+	public void setIsboss(boolean isboss) {
+		this.isboss = isboss;
+	}
+
+	public int getCoins() {
+		return coins;
+	}
+
+	public void setCoins(int coins) {
+		this.coins = coins;
 	}
     
 

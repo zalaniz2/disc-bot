@@ -25,6 +25,17 @@ public class MonsterDao {
 			throw new RuntimeException("Select monsters exception.");
 		}
 	}
+	public List<Monster> selectAll() {
+		try {
+			String sql = "SELECT * FROM monster;";
+			List<Monster> list = qr.query(sql, new BeanListHandler<>(Monster.class));
+			return list;
+		}
+		catch(SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Select all monsters exception.");
+		}
+	}
 
 
 }

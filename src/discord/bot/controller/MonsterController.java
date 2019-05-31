@@ -13,6 +13,10 @@ public class MonsterController {
 		System.out.println("Getting monsters on floor" + floor + " and map " + map);
 		return service.selectMonsters(floor, map);
 	}
+	public List<Monster> selectAll(){
+		System.out.println("Getting all monsters in game.");
+		return service.selectAll();
+	}
 
 
 }
