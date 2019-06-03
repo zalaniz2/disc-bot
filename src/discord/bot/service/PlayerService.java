@@ -4,6 +4,7 @@ import java.util.List;
 
 import discord.bot.dao.PlayerDao;
 import discord.bot.domain.Player;
+import discord.bot.domain.Item;
 
 public class PlayerService {
 	
@@ -30,6 +31,24 @@ public class PlayerService {
 	public int updatePosition(Player p) {
 		System.out.println("Updating position in DB.");
 		return pd.updatePosition(p);
+	}
+	public int updatePlayerCombat(Player p) {
+		System.out.println("Updating player in DB.");
+		return pd.updatePlayerCombat(p);
+	}
+	public int updatePlayerInventory(Item i, Player p) {
+		System.out.println("Updating inv. in DB.");
+		return pd.updatePlayerInventory(i, p);
+	}
+	public int updateMoney(Player p) {
+		System.out.println("Updating money in DB.");
+		return pd.updateMoney(p);
+	}
+	public int updateHp(Player p) {
+		return pd.updateHp(p);
+	}
+	public int removeInventoryItem(Item i, Player p) {
+		return pd.removeInventoryItem(i, p);
 	}
 
 }

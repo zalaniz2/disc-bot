@@ -16,7 +16,8 @@ public class Player {
 	private String username;
 	private int money;
 	private int	lvl;
-	private double exp;
+	private int exp;
+	private double percent;
 	private int floor;
 	private int map;
 	private int att;
@@ -30,13 +31,14 @@ public class Player {
 	private boolean fa5;
 
 	  
-	public Player(int pid, String discordId, String pname, int money, int lvl, double exp, int floor, int map, int patt, int pdef, int php, int pmaxhp, boolean fa1, boolean fa2, boolean fa3, boolean fa4, boolean fa5) {
+	public Player(int pid, String discordId, String pname, int money, int lvl, int exp, double percent, int floor, int map, int patt, int pdef, int php, int pmaxhp, boolean fa1, boolean fa2, boolean fa3, boolean fa4, boolean fa5) {
 		this.id = pid;
 		this.discid = discordId;
 		this.username = pname;
 		this.money = money;
 		this.lvl = lvl;
 		this.exp = exp;
+		this.percent = percent;
 		this.floor = floor;
 		this.map = map;
 		this.att = patt;
@@ -52,9 +54,10 @@ public class Player {
 	
 	public Player() {
 		
-		this.money = 0;
+		this.money = 100;
 		this.lvl = 1;
-		this.exp = 0.00;
+		this.exp = 0;
+		this.percent = 0.00;
 		this.floor = 1;
 		this.map = 1;
 		this.att = 5;
@@ -99,11 +102,18 @@ public class Player {
 	public void setLvl(int lvl) {
 		this.lvl = lvl;
 	}
-	public double getExp() {
+	public int getExp() {
 		return exp;
 	}
-	public void setExp(double exp) {
+	public void setExp(int exp) {
 		this.exp = exp;
+	}
+	public double getPercent() {
+		return percent;
+	}
+
+	public void setPercent(double percent) {
+		this.percent = percent;
 	}
 	public int getFloor() {
 		return floor;

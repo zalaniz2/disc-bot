@@ -48,6 +48,18 @@ public class ItemDao {
 			throw new RuntimeException("Select monster drops exception.");
 		}
 	}
+	public List<Item> selectInventoryPotions(Player p) {
+		try {
+			String sql = "SELECT  i.id, i.name, i.lvl, i.att, i.def, i.type, i.worth, i.classification, i.hp, i.rate FROM inventory inv join item i on inv.iid=i.id where inv.pid=" + p.getId() + " and i.name='Potion'";
+
+			List<Item> list = qr.query(sql, new BeanListHandler<>(Item.class));
+			return list;
+		}
+		catch(SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Select monster drops exception.");
+		}
+	}
 
 
 }

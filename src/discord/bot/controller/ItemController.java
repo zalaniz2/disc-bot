@@ -27,6 +27,11 @@ public class ItemController {
 		return service.selectPlayerItems(p);
 		
 	}
+	
+	public List<Item> selectInventoryPotions(Player p){
+		System.out.println("Checking for potions from player " + p.getUsername());
+		return service.selectInventoryPotions(p);
+	}
 
 	
 	

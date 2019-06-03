@@ -24,6 +24,9 @@ public class ItemService {
 		System.out.println("Getting inventory.");
 		return id.selectPlayerItems(p);
 	}
+	public List<Item> selectInventoryPotions(Player p){
+		return id.selectInventoryPotions(p);
+	}
 
 	
 	

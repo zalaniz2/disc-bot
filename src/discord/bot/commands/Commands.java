@@ -5,16 +5,21 @@ import java.util.List;
 
 import discord.bot.Main;
 import discord.bot.controller.ItemController;
+import discord.bot.controller.LevelsController;
 import discord.bot.controller.FloorController;
 import discord.bot.controller.MonsterController;
 import discord.bot.controller.PlayerController;
 import discord.bot.domain.Item;
+import discord.bot.domain.Levels;
 import discord.bot.domain.Floor;
 import discord.bot.domain.Map;
 import discord.bot.domain.Monster;
 import discord.bot.domain.Player;
+import discord.bot.game.Combat;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import java.util.Random;
+
 
 public class Commands extends ListenerAdapter{
 	
@@ -22,6 +27,8 @@ public class Commands extends ListenerAdapter{
 	private FloorController fc = new FloorController();
 	private MonsterController mc = new MonsterController();
 	private ItemController ic = new ItemController();
+	private LevelsController lc = new LevelsController();
+	private Random rand;
 
 	
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
@@ -120,7 +127,7 @@ public class Commands extends ListenerAdapter{
 			}
 			else {
 				event.getChannel().sendMessage("Your character info:\n").queue();
-				event.getChannel().sendMessage("Username: " + p.get(0).getUsername() + "\n Level: " + p.get(0).getLvl() + "\n Exp: " + p.get(0).getExp() + "% \n Money: " + p.get(0).getMoney() + "\n Location: Floor " + p.get(0).getFloor() + ", Map " + p.get(0).getMap() + "\n Attack: " + p.get(0).getAtt() + "\n Defense: " + 
+				event.getChannel().sendMessage("Username: " + p.get(0).getUsername() + "\n Level: " + p.get(0).getLvl() + "\n Exp: " + p.get(0).getExp() + "\n Percent: " + p.get(0).getPercent() + " \n Money: " + p.get(0).getMoney() + "\n Location: Floor " + p.get(0).getFloor() + ", Map " + p.get(0).getMap() + "\n Attack: " + p.get(0).getAtt() + "\n Defense: " + 
 				p.get(0).getDef() + "\n Health: " + p.get(0).getHp() + "/" + p.get(0).getMaxhp() + "\n Floor Access: \n   1 = " + p.get(0).isFa1() + "\n   2 = " + p.get(0).isFa2()).queue();
 			}
 			
@@ -323,6 +330,113 @@ public class Commands extends ListenerAdapter{
 
 			
 		}
+		
+		if( args[0].equalsIgnoreCase(Main.prefix + "fight") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing)
+			
+			//get player fighting, and the mosters on their current map
+			
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			List<Monster> monsters = new ArrayList<Monster>();
+			monsters = mc.selectMonsters(p.get(0).getFloor(), p.get(0).getMap());
+			
+			List<Levels> lvls = new ArrayList<Levels>();
+			
+			Combat c = new Combat();
+			boolean won;
+			int num = (int) (Math.random() *  monsters.size() );
+			
+			Monster mon = monsters.get(num);
+			Player play = p.get(0);
+			
+			lvls = lc.selectPlayerLevel(play);
+		
+		    won = c.fight(play, mon);
+
+			
+			if( won ) {
+				
+				c.updateExp(play, mon.getExp(), (ArrayList<Levels>) lvls);
+				int ud = pc.updatePlayerCombat(play);
+				List<Item> drops = ic.selectMonsterDrops(mon);
+				c.updateInventory(play, (ArrayList<Item>) drops, mon.getCoins());
+				event.getChannel().sendMessage("You won!").queue();
+				
+			}
+			else {
+				play.setHp(play.getMaxhp() / 2);
+				int expLoss = play.getLvl() * mon.getExp();
+				if( expLoss > play.getExp() ) {
+					play.setExp(0);
+					play.setPercent(0.00);
+				}
+				else {
+					play.setExp(play.getExp() - expLoss);
+					double pcnt = (double) play.getExp() / (double) lvls.get(0).getExp();
+					play.setPercent(pcnt);
+				}
+				int d = pc.updatePlayerCombat(play);
+				
+				event.getChannel().sendMessage("You died..").queue();
+			}
+			
+			
+		}
+		
+		if( args[0].equalsIgnoreCase(Main.prefix + "potion") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing)
+			
+
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			List<Item> potions = ic.selectInventoryPotions(play);
+			
+			if( potions.size() == 0) {
+				event.getChannel().sendMessage("You have no potions.").queue();
+
+			}
+			else {
+				
+				int newHp = play.getHp() + potions.get(0).getHp();
+				int gained = potions.get(0).getHp();
+				
+				if( play.getHp() == play.getMaxhp()) {
+					event.getChannel().sendMessage("You already have full hp.").queue();
+
+				}
+				
+				else if( newHp > play.getMaxhp() ) {
+					play.setHp(play.getMaxhp());
+					gained-= (newHp - play.getMaxhp());
+					event.getChannel().sendMessage("Gained " + gained + " hp").queue();
+					int hpUp = pc.updateHp(play);
+					int remove = pc.removeInventoryItem(potions.get(0), play);
+					
+				}
+				else {
+					play.setHp(newHp);
+					event.getChannel().sendMessage("Gained " + gained + " hp").queue();
+					int hpUp = pc.updateHp(play);
+					int remove = pc.removeInventoryItem(potions.get(0), play);
+				}
+				
+
+			}
+			
+			
+		}
+		
+		
+		
 
 
 		
