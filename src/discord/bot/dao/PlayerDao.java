@@ -132,6 +132,30 @@ public class PlayerDao {
 		}
 		
 	}
+	public int equipPlayerItem(Player p, Item i) {
+		try {
+			String sql =  "INSERT INTO equip(pid, iid) VALUES(" + p.getId() + "," + i.getId() + ");"; 
+			int play = qr.update(sql);
+			return play;
+		} 
+		catch (SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Update player current equips exception");
+		}
+		
+	}
+	public int removePlayerEquip(Player p, Item i) {
+		try {
+			String sql = "DELETE FROM equip where iid="+i.getId() + " and pid="+p.getId() + ";"; 
+			int play = qr.update(sql);
+			return play;
+		} 
+		catch (SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Remove player equip exception");
+		}
+		
+	}
 	
 
 }

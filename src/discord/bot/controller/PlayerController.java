@@ -51,6 +51,12 @@ public class PlayerController {
 	public int removeInventoryItem(Item i, Player p) {
 		return service.removeInventoryItem(i, p);
 	}
+	public int equipPlayerItem(Player p, Item i) {
+		return service.equipPlayerItem(p, i);
+	}
+	public int removePlayerEquip(Player p, Item i) {
+		return service.removePlayerEquip(p, i);
+	}
 	
 
 	

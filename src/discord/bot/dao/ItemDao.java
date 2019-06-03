@@ -60,6 +60,29 @@ public class ItemDao {
 			throw new RuntimeException("Select monster drops exception.");
 		}
 	}
+	
+	public List<Item> selectInventoryEquip(Player p, String it) {
+		try {
+			String sql = "SELECT  i.id, i.name, i.lvl, i.att, i.def, i.type, i.worth, i.classification, i.hp, i.rate FROM inventory inv join item i on inv.iid=i.id where inv.pid=" + p.getId() + " and i.name='"+it+"';";
+			List<Item> list = qr.query(sql, new BeanListHandler<>(Item.class));
+			return list;
+		}
+		catch(SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Select player equip exception.");
+		}
+	}
+	public List<Item> selectPlayerEquipType(Player p, Item i) {
+		try {
+			String sql = "SELECT i.id, i.name, i.lvl, i.att, i.def, i.type, i.worth, i.classification FROM equip e join item i on e.iid=i.id join player p on e.pid=" + p.getId() + " where i.type=" + i.getType() + ";";
+			List<Item> list = qr.query(sql, new BeanListHandler<>(Item.class));
+			return list;
+		}
+		catch(SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Select player equipped item exception.");
+		}
+	}
 
 
 }

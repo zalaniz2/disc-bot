@@ -50,5 +50,11 @@ public class PlayerService {
 	public int removeInventoryItem(Item i, Player p) {
 		return pd.removeInventoryItem(i, p);
 	}
+	public int equipPlayerItem(Player p, Item i) {
+		return pd.equipPlayerItem(p, i);
+	}
+	public int removePlayerEquip(Player p, Item i) {
+		return pd.removePlayerEquip(p, i);
+	}
 
 }

@@ -436,6 +436,80 @@ public class Commands extends ListenerAdapter{
 		}
 		
 		
+		if( args[0].equalsIgnoreCase(Main.prefix + "equip") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing)
+			
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			if( args.length < 3) {
+				event.getChannel().sendMessage("Wrong formatting.").queue();
+
+			}
+			else {
+				String it = args[1] + " " + args[2];
+				System.out.println("User " + play.getUsername() + " wants to equip a " + it);
+				List<Item> wep = ic.selectInventoryEquip(play, it);
+				if( wep.size() == 0) {
+					event.getChannel().sendMessage("You do not have this item or you typed the name wrong.").queue();
+
+				}
+				else {
+					Item i = wep.get(0);
+					System.out.println("Got item " + i.getName() + " of type " + i.getType());
+					
+					//next check for currently equipped helmet to see if it needs to be put back into inventory 
+					List<Item> currentEquip = ic.selectPlayerEquipType(play, i);
+					
+					if( currentEquip.size() == 0) {
+						System.out.println("No current item of this type equipped yet.");
+						
+						if( i.getLvl() > play.getLvl()) {
+							event.getChannel().sendMessage("You are too low of a level to equip this item.").queue();
+						}
+						else {
+							int equipThis = pc.equipPlayerItem(play, i); //add item to equips 
+							int removeThis = pc.removeInventoryItem(i, play);
+							event.getChannel().sendMessage("Equipped: "+ i.getName() + ".").queue();
+						}
+					
+
+					}
+					else {
+						
+						
+						
+						Item cur = currentEquip.get(0);
+						System.out.println("Player has an item to switch out.");
+						if( i.getLvl() > play.getLvl()) {
+							event.getChannel().sendMessage("You are too low of a level to equip this item.").queue();
+						}
+						else {
+							int remEq = pc.removePlayerEquip(play, cur);
+							//add removed item to inventory 
+							int putBack = pc.updatePlayerInventory(cur, play);
+							int equipThis = pc.equipPlayerItem(play, i); //add item to equips 
+							int removeThis = pc.removeInventoryItem(i, play);
+							event.getChannel().sendMessage("Equipped: "+ i.getName() + "\n Removed: " + cur.getName()).queue();
+							
+						}
+					
+
+
+					}
+					
+
+				}
+			}
+			
+			
+		}
+		
+		
 		
 
 

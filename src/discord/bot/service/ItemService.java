@@ -27,6 +27,12 @@ public class ItemService {
 	public List<Item> selectInventoryPotions(Player p){
 		return id.selectInventoryPotions(p);
 	}
+	public List<Item> selectInventoryEquip(Player p, String it){
+		return id.selectInventoryEquip(p, it);
+	}
+	public List<Item> selectPlayerEquipType(Player p, Item i){
+		return id.selectPlayerEquipType(p, i);
+	}
 
 	
 	
