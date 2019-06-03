@@ -440,6 +440,8 @@ public class Commands extends ListenerAdapter{
 			
 			event.getChannel().sendTyping().queue(); //pretend bot is typing)
 			
+			Combat c = new Combat();
+			
 			String id = event.getAuthor().getAvatarId();
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
@@ -474,6 +476,8 @@ public class Commands extends ListenerAdapter{
 						else {
 							int equipThis = pc.equipPlayerItem(play, i); //add item to equips 
 							int removeThis = pc.removeInventoryItem(i, play);
+							List<Item> pe = ic.selectPlayerEquips(play);
+							c.updateStats(play, (ArrayList<Item>) pe);
 							event.getChannel().sendMessage("Equipped: "+ i.getName() + ".").queue();
 						}
 					
@@ -494,6 +498,8 @@ public class Commands extends ListenerAdapter{
 							int putBack = pc.updatePlayerInventory(cur, play);
 							int equipThis = pc.equipPlayerItem(play, i); //add item to equips 
 							int removeThis = pc.removeInventoryItem(i, play);
+							List<Item> pe = ic.selectPlayerEquips(play);
+							c.updateStats(play, (ArrayList<Item>) pe);
 							event.getChannel().sendMessage("Equipped: "+ i.getName() + "\n Removed: " + cur.getName()).queue();
 							
 						}

@@ -156,6 +156,18 @@ public class PlayerDao {
 		}
 		
 	}
+	public int updatePlayerStats(Player p) {
+		try {
+			String sql = "UPDATE player SET att="+ p.getAtt() + ",def=" + p.getDef() + " where id="+p.getId() + ";";   
+			int play = qr.update(sql);
+			return play;
+		} 
+		catch (SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Update player stats exception");
+		}
+		
+	}
 	
 
 }

@@ -57,6 +57,9 @@ public class PlayerController {
 	public int removePlayerEquip(Player p, Item i) {
 		return service.removePlayerEquip(p, i);
 	}
+	public int updatePlayerStats(Player p) {
+		return service.updatePlayerStats(p);
+	}
 	
 
 	

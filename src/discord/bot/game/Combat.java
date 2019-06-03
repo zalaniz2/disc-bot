@@ -3,6 +3,7 @@ package discord.bot.game;
 
 import java.util.ArrayList;
 
+import discord.bot.controller.ItemController;
 import discord.bot.controller.LevelsController;
 import discord.bot.controller.PlayerController;
 import discord.bot.domain.Monster;
@@ -14,6 +15,7 @@ public class Combat {
 	
 	private PlayerController pc = new PlayerController();
 	private LevelsController lc = new LevelsController();
+	private ItemController ic = new ItemController();
 	
 	public Combat() {}
 	
@@ -145,6 +147,28 @@ public class Combat {
 		p.setMoney(p.getMoney() + gain);
 		
 		int add = pc.updateMoney(p);
+		
+	}
+	
+	public void updateStats(Player p, ArrayList<Item> playerEquips) {
+		
+		int base = p.getLvl() + 4;
+		int newAtt = base;
+		int newDef = base;
+		
+		for( int i = 0; i<playerEquips.size(); i++) {
+			
+			Item pitem = playerEquips.get(i);
+			
+			newAtt += pitem.getAtt();
+			newDef += pitem.getDef();
+			
+		}
+		
+		p.setAtt(newAtt);
+		p.setDef(newDef);
+		
+		int newStats = pc.updatePlayerStats(p);
 		
 	}
 	

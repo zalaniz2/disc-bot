@@ -56,5 +56,9 @@ public class PlayerService {
 	public int removePlayerEquip(Player p, Item i) {
 		return pd.removePlayerEquip(p, i);
 	}
+	public int updatePlayerStats(Player p) {
+		return pd.updatePlayerStats(p);
+	}
 
+	
 }
