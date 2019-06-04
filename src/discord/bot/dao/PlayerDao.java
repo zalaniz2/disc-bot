@@ -168,6 +168,18 @@ public class PlayerDao {
 		}
 		
 	}
+	public int updateFloorAccess(Player p, String access) {
+		try {
+			String sql = "UPDATE player SET " + access + "=true where id="+p.getId() + ";";   
+			int play = qr.update(sql);
+			return play;
+		} 
+		catch (SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Update player access exception");
+		}
+		
+	}
 	
 
 }

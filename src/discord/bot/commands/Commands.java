@@ -51,7 +51,13 @@ public class Commands extends ListenerAdapter{
 										   "left: Move left to a new map. \n" +
 										   "equips: Shows your current equipment. \n" +
 										   "droplist: Shows what monster drops what items. \n" +
-										   "inventory: Shows what's in your current bag. \n"
+										   "inventory: Shows what's in your current bag. \n" +
+										   "fight: Fight one of the monsters on your map. \n" + 
+										   "potion: Use a potion from your inventory. \n" +
+										   "equip <weapon>: Equip a weapon/armor from your inventory. \n" + 
+										   "buy: Buy item from your floor shop. \n" + 
+										   "sell: Sell inventory item to shop. \n" +
+										   "bossfight: Challenge the floor boss to gain access to the next floor."
 			).queue();
 		
 		}
@@ -170,6 +176,7 @@ public class Commands extends ListenerAdapter{
 				
 		}
 		
+		
 		if( args[0].equalsIgnoreCase(Main.prefix + "floorinfo") ) {
 			
 			event.getChannel().sendTyping().queue(); //pretend bot is typing 
@@ -191,6 +198,7 @@ public class Commands extends ListenerAdapter{
 				
 		}
 		
+		//show diff info
 		if( args[0].equalsIgnoreCase(Main.prefix + "monsterlist") ) {
 			
 			event.getChannel().sendTyping().queue(); //pretend bot is typing 
@@ -265,6 +273,7 @@ public class Commands extends ListenerAdapter{
 			
 		}
 		
+		
 		if( args[0].equalsIgnoreCase(Main.prefix + "equips") ) {
 			
 			event.getChannel().sendTyping().queue(); //pretend bot is typing
@@ -288,6 +297,7 @@ public class Commands extends ListenerAdapter{
 		
 		}
 		
+		//droplist for monsters on your map, not overall monsters everywhere
 		if( args[0].equalsIgnoreCase(Main.prefix + "droplist") ) {
 			
 			event.getChannel().sendTyping().queue(); //pretend bot is typing)
@@ -310,6 +320,7 @@ public class Commands extends ListenerAdapter{
 			
 		}
 		
+		//add check for if bag is empty, show items as potions 4x, instea dof listing one by one
 		if( args[0].equalsIgnoreCase(Main.prefix + "inventory") ) {
 			
 			event.getChannel().sendTyping().queue(); //pretend bot is typing)
@@ -514,6 +525,211 @@ public class Commands extends ListenerAdapter{
 			
 			
 		}
+		
+		if( args[0].equalsIgnoreCase(Main.prefix + "floorshop") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing)
+			
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			List<Item> shopItems = ic.selectShopItems(play);
+			
+			String shop = "Floor " + play.getFloor() + " Shop: \n";
+			
+			for( int i = 0; i<shopItems.size(); i++) {
+				shop+= "Item: " + shopItems.get(i).getName() + " Cost: " + shopItems.get(i).getWorth() + " Type: " + shopItems.get(i).getClassification() + " \n";
+			}
+			
+			event.getChannel().sendMessage(shop).queue();
+
+				
+		}
+		
+		if(args[0].equalsIgnoreCase(Main.prefix + "buy") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing)
+			
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			if( args.length < 2) {
+				event.getChannel().sendMessage("Wrong formatting for command.").queue();
+
+			}
+			else if(args.length == 2){
+				String buy = args[1]; 
+				System.out.println("Player wants a " + buy);
+				List<Item> shopItem = ic.selectItemFromShop(play, buy);
+				if(shopItem.size() == 0) {
+					event.getChannel().sendMessage("That Item isn't in the shop.").queue();
+				}
+				else {
+					Item i = shopItem.get(0);
+					if( i.getWorth() > play.getMoney()) {
+						event.getChannel().sendMessage("You don't have enough for this item.").queue();
+					}
+					else {
+						play.setMoney(play.getMoney() - i.getWorth());
+						int add = pc.updatePlayerInventory(i, play);
+						int newMoney = pc.updateMoney(play);
+					}
+				}
+			}
+			else {
+				String buy = args[1] + " " + args[2]; 
+				System.out.println("Player wants a " + buy);
+				List<Item> shopItem = ic.selectItemFromShop(play, buy);
+				if(shopItem.size() == 0) {
+					event.getChannel().sendMessage("That Item isn't in the shop.").queue();
+				}
+				else {
+					Item i = shopItem.get(0);
+					if( i.getWorth() > play.getMoney()) {
+						event.getChannel().sendMessage("You don't have enough for this item.").queue();
+					}
+					else {
+						play.setMoney(play.getMoney() - i.getWorth());
+						int add = pc.updatePlayerInventory(i, play);
+						int newMoney = pc.updateMoney(play);
+					}
+					
+				}
+				
+			}
+			
+
+		}
+		
+		
+		//add a check for if bag is empty
+		if(args[0].equalsIgnoreCase(Main.prefix + "sell") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing)
+			
+			
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			if( args.length < 2) {
+				event.getChannel().sendMessage("Wrong formatting for command.").queue();
+
+			}
+			else if(args.length == 2){
+				
+				String playerItem = args[1];
+				List<Item> pi = ic.selectInventoryEquip(play, playerItem);
+				
+				if( pi.size() == 0) {
+					event.getChannel().sendMessage("You don't have that item in your inventory.").queue();
+				}
+				else {
+					Item i = pi.get(0);
+					play.setMoney(play.getMoney() + i.getWorth());
+					int rm = pc.removeInventoryItem(i, play);
+					int pm = pc.updateMoney(play);
+				}
+				
+			}
+			else {
+				String playerItem = args[1] + " " + args[2];
+				List<Item> pi = ic.selectInventoryEquip(play, playerItem);
+				
+				if( pi.size() == 0) {
+					event.getChannel().sendMessage("You don't have that item in your inventory.").queue();
+				}
+				else {
+					
+					Item i = pi.get(0);
+					play.setMoney(play.getMoney() + i.getWorth());
+					int rm = pc.removeInventoryItem(i, play);
+					int pm = pc.updateMoney(play);
+				}
+				
+			}
+			
+			
+		}
+		
+		//important: add check for when user is at the top floor with no more accesses to get.
+		if(args[0].equalsIgnoreCase(Main.prefix + "bossfight") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing)
+			
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			List<Floor> playerFloor = fc.selectFloor(play.getFloor());
+			
+			Floor bf = playerFloor.get(0);
+			
+			if( play.getMap() == bf.getMaps() ) {
+				
+				List<Monster> boss = mc.selectFloorBoss(play.getFloor());
+				Monster b = boss.get(0);
+				System.out.println("Floor boss for floor " + play.getFloor() + " is " + b.getName());
+				Combat c = new Combat();
+				boolean won;
+				won = c.fight(play, b);
+				
+				List<Levels> lvls = new ArrayList<Levels>();
+				lvls = lc.selectPlayerLevel(play);
+				
+				if( won ) {
+					
+					c.updateExp(play, b.getExp(), (ArrayList<Levels>) lvls);
+					int ud = pc.updatePlayerCombat(play);
+					List<Item> drops = ic.selectMonsterDrops(b);
+					c.updateInventory(play, (ArrayList<Item>) drops, b.getCoins());
+					String acc = "fa" + (play.getFloor() + 1);
+					int ga = pc.updateFloorAccess(play, acc);
+					event.getChannel().sendMessage("You beat the Floor " + play.getFloor() + " boss! You have gained access to floor #" +  (play.getFloor() +1) ).queue();
+					
+				}
+				else {
+					play.setHp(play.getMaxhp() / 2);
+					int expLoss = play.getLvl() * b.getExp();
+					if( expLoss > play.getExp() ) {
+						play.setExp(0);
+						play.setPercent(0.00);
+					}
+					else {
+						play.setExp(play.getExp() - expLoss);
+						double pcnt = (double) play.getExp() / (double) lvls.get(0).getExp();
+						play.setPercent(pcnt);
+					}
+					int d = pc.updatePlayerCombat(play);
+					
+					event.getChannel().sendMessage("DEFEATED...You couldn't handle the boss yet..").queue();
+					
+				}
+				
+				
+			}
+			else {
+				event.getChannel().sendMessage("You have to be on the last map of the floor to challenge the boss.").queue();
+
+			}
+			
+			
+			
+			
+			
+		}
+		
+		
 		
 		
 		

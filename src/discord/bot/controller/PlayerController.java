@@ -60,6 +60,9 @@ public class PlayerController {
 	public int updatePlayerStats(Player p) {
 		return service.updatePlayerStats(p);
 	}
+	public int updateFloorAccess(Player p, String access) {
+		return service.updateFloorAccess(p, access);
+	}
 	
 
 	

@@ -39,6 +39,12 @@ public class ItemController {
 	public List<Item> selectPlayerEquipType(Player p, Item i){
 		return service.selectPlayerEquipType(p, i);
 	}
+	public List<Item> selectShopItems(Player p){
+		return service.selectShopItems(p);
+	}
+	public List<Item> selectItemFromShop(Player p, String i){
+		return service.selectItemFromShop(p, i);
+	}
 
 	
 	

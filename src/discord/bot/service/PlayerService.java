@@ -59,6 +59,9 @@ public class PlayerService {
 	public int updatePlayerStats(Player p) {
 		return pd.updatePlayerStats(p);
 	}
+	public int updateFloorAccess(Player p, String access) {
+		return pd.updateFloorAccess(p, access);
+	}
 
 	
 }

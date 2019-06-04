@@ -18,6 +18,10 @@ public class MonsterService {
 		return md.selectAll();
 
 	}
+	
+	public List<Monster> selectFloorBoss(int floor){
+		return md.selectFloorBoss(floor);
+	}
 
 
 }

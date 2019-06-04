@@ -17,6 +17,9 @@ public class MonsterController {
 		System.out.println("Getting all monsters in game.");
 		return service.selectAll();
 	}
+	public List<Monster> selectFloorBoss(int floor){
+		return service.selectFloorBoss(floor);
+	}
 
 
 }
