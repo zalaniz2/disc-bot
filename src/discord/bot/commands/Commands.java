@@ -140,7 +140,7 @@ public class Commands extends ListenerAdapter{
 		if( args[0].equalsIgnoreCase(Main.prefix + "char") ) {
 			
 			event.getChannel().sendTyping().queue(); //pretend bot is typing 
-			
+						
 			String id = event.getAuthor().getAvatarId();
 			
 			List<Player> p = new ArrayList<Player>();
@@ -191,6 +191,13 @@ public class Commands extends ListenerAdapter{
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id);
 			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+			
 			Player play = p.get(0); //hold player
 			
 			List<Map> maps = new ArrayList<Map>();
@@ -236,6 +243,13 @@ public class Commands extends ListenerAdapter{
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command 
 			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+			
 			List<Monster> monsters = new ArrayList<Monster>();
 			monsters = mc.selectMonsters(p.get(0).getFloor(), p.get(0).getMap());
 			
@@ -269,6 +283,13 @@ public class Commands extends ListenerAdapter{
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command 
 			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+			
 			Player pl = p.get(0);
 			
 			List<Floor> f = new ArrayList<Floor>();
@@ -298,6 +319,13 @@ public class Commands extends ListenerAdapter{
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command 
 			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+			
 			Player pl = p.get(0);
 			
 			if( pl.getMap() == 1) {
@@ -323,6 +351,13 @@ public class Commands extends ListenerAdapter{
 			String id = event.getAuthor().getAvatarId();
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
+			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
 			
 			List<Item> arm = new ArrayList<Item>();
 			
@@ -356,6 +391,13 @@ public class Commands extends ListenerAdapter{
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
 			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+			
 			List<Item> inv = new ArrayList<Item>();
 			inv = ic.selectPlayerItems(p.get(0));
 			
@@ -385,14 +427,23 @@ public class Commands extends ListenerAdapter{
 			
 			//get player fighting, and the mosters on their current map
 			
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+			
 			if( args.length < 3) {
 				event.getChannel().sendMessage("`Invalid arguments, please provide a monster name.`").queue();
 				return;
 			}
 			
-			String id = event.getAuthor().getAvatarId();
-			List<Player> p = new ArrayList<Player>();
-			p = pc.selectPlayer(id); //get player issuing command
+			
 			
 			Player play = p.get(0);
 
@@ -469,6 +520,13 @@ public class Commands extends ListenerAdapter{
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
 			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+			
 			Player play = p.get(0);
 			
 			List<Item> potions = ic.selectInventoryPotions(play);
@@ -518,6 +576,13 @@ public class Commands extends ListenerAdapter{
 			String id = event.getAuthor().getAvatarId();
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
+			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
 			
 			Player play = p.get(0);
 			
@@ -615,6 +680,13 @@ public class Commands extends ListenerAdapter{
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
 			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+			
 			Player play = p.get(0);
 			
 			List<Item> shopItems = ic.selectShopItems(play);
@@ -646,6 +718,13 @@ public class Commands extends ListenerAdapter{
 			String id = event.getAuthor().getAvatarId();
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
+			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
 			
 			Player play = p.get(0);
 			
@@ -710,6 +789,13 @@ public class Commands extends ListenerAdapter{
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
 			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+			
 			Player play = p.get(0);
 			
 			if( args.length < 2) {
@@ -762,6 +848,13 @@ public class Commands extends ListenerAdapter{
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
 			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+			
 			Player play = p.get(0);
 			
 			List<Monster> b = mc.selectFloorBoss(play.getFloor());
@@ -799,6 +892,13 @@ public class Commands extends ListenerAdapter{
 			String id = event.getAuthor().getAvatarId();
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
+			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
 			
 			Player play = p.get(0);
 			
@@ -883,6 +983,13 @@ public class Commands extends ListenerAdapter{
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
 			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+			
 			Player play = p.get(0);
 			
 			event.getChannel().sendMessage("`Map " + play.getMap() + ", Floor " + play.getFloor() + ".`").queue();
@@ -899,6 +1006,13 @@ public class Commands extends ListenerAdapter{
 			String id = event.getAuthor().getAvatarId();
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
+			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
 			
 			Player play = p.get(0);
 			
@@ -922,6 +1036,13 @@ public class Commands extends ListenerAdapter{
 			String id = event.getAuthor().getAvatarId();
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
+			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
 			
 			Player play = p.get(0);
 			
@@ -981,6 +1102,13 @@ public class Commands extends ListenerAdapter{
 				List<Player> p = new ArrayList<Player>();
 				p = pc.selectPlayer(id); //get player issuing command
 				
+				if( p.size() == 0 ) {
+					
+					event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+					return;
+					
+				}
+				
 				Player play = p.get(0);
 				
 				event.getChannel().sendMessage("`You have " + play.getMoney() + "$`").queue();
@@ -998,6 +1126,13 @@ public class Commands extends ListenerAdapter{
 			String id = event.getAuthor().getAvatarId();
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
+			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
 			
 			Player play = p.get(0);
 			
@@ -1033,6 +1168,13 @@ public class Commands extends ListenerAdapter{
 	 			String id = event.getAuthor().getAvatarId();
 				List<Player> p = new ArrayList<Player>();
 				p = pc.selectPlayer(id); //get player issuing command
+				
+				if( p.size() == 0 ) {
+					
+					event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+					return;
+					
+				}
 				
 				Player play = p.get(0);
 				
@@ -1081,6 +1223,13 @@ public class Commands extends ListenerAdapter{
 			List<Player> p = new ArrayList<Player>();
 			p = pc.selectPlayer(id); //get player issuing command
 			
+			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+			
 			Player play = p.get(0);
 			
 			
@@ -1114,16 +1263,24 @@ public class Commands extends ListenerAdapter{
 			
  			event.getChannel().sendTyping().queue(); //pretend bot is typing
  			
+ 			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+ 			
+ 			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+ 			
  			if( args.length < 3) {
 				event.getChannel().sendMessage("`Invalid trade, please give the name of an item and the name of the player to trade with.`").queue();
 				return;
 
  			}
  			
- 			String id = event.getAuthor().getAvatarId();
-			List<Player> p = new ArrayList<Player>();
-			p = pc.selectPlayer(id); //get player issuing command
-			
+ 			
 			Player play = p.get(0);
 			
 			if( args.length == 3) {
@@ -1167,6 +1324,17 @@ public class Commands extends ListenerAdapter{
 			
  			event.getChannel().sendTyping().queue(); //pretend bot is typing
  			
+ 			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+ 			
+ 			if( p.size() == 0 ) {
+				
+				event.getChannel().sendMessage("`You do not have a character yet.`").queue();
+				return;
+				
+			}
+ 			
  			if( args.length < 3) {
  				
 				event.getChannel().sendMessage("`Invalid trade, please give the name the coin amount and the name of the player to trade with.`").queue();
@@ -1174,9 +1342,6 @@ public class Commands extends ListenerAdapter{
 
  			}
  			
- 			String id = event.getAuthor().getAvatarId();
-			List<Player> p = new ArrayList<Player>();
-			p = pc.selectPlayer(id); //get player issuing command
 			
 			Player play = p.get(0);
 			
