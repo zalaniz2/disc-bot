@@ -47,6 +47,18 @@ public class FloorDao {
 			throw new RuntimeException("Select floor exception.");
 		}
 	}
+	
+	public List<Floor> selectTopFloor() {
+		try {
+			String sql = "SELECT * FROM floor ORDER BY id DESC LIMIT 0, 1;";
+			List<Floor> list = qr.query(sql, new BeanListHandler<>(Floor.class));
+			return list;
+		}
+		catch(SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Select top floor exception.");
+		}
+	}
 
 
 }

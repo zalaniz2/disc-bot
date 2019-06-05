@@ -105,6 +105,17 @@ public class ItemDao {
 			throw new RuntimeException("Check shop item exception.");
 		}
 	}
+	public List<Item> selectPlayerEquipName(Player p, String name) {
+		try {
+			String sql = "SELECT i.id, i.name, i.lvl, i.att, i.def, i.type, i.worth, i.classification FROM equip e join item i on e.iid=i.id join player p on e.pid=" + p.getId() + " where i.name='" + name + "';";
+			List<Item> list = qr.query(sql, new BeanListHandler<>(Item.class));
+			return list;
+		}
+		catch(SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Select player equipped item by name exception.");
+		}
+	}
 
 
 }

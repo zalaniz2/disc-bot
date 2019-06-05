@@ -44,19 +44,29 @@ public class Commands extends ListenerAdapter{
 										  "**create <username>** \n `Create a character with the given username if you do not already have one.` \n \n" +
 										  "**players** \n `Shows a list of all current players and their level/floor.` \n \n" +
 										   "**char** \n `Displays your current character's information.` \n \n"+
+										  "**location** \n `Gives your current floor and map.` \n \n" +
+										   "**stats** \n `Shows your current combat stats.` \n \n" +
+										  "**coins** \n `Shows how much money you have.` \n \n" + 
 										   "**delete** \n `Deletes your character if you have one.` \n \n" +
 										   "**floorinfo** \n `Shows floor and map information for your current floor.` \n \n" +
+										   "**floorup** \n `Moves you to the next floor if you have access.` \n \n" +
+										   "**floordown** \n `Moves you to the next floor down.` \n \n" +
 										   "**mm** \n `Shows monsters available to fight on current map with in-depth information.` \n \n" +
 										   "**right** \n `Move right to a new map.` \n \n" +
 										   "**left** \n `Move left to a new map.` \n \n" +
 										   "**equips** \n `Shows your current equipment w/ their stats.` \n \n" +
+										   "**dequip <item>** \n `Take off an equipped item and put it back in your inventory.` \n \n" +
 										   "**inventory** \n `Shows items in your bag.` \n \n" +
+										   "**checkitem <item name>** \n `Shows in-depth information about an item in your inventory.` \n \n" +
 										   "**fight <monster>** \n `Fight one of the monsters on your map.` \n \n" + 
 										   "**potion** \n `Use a potion from your inventory.` \n \n" +
 										   "**equip <weapon name>** \n `Equip a weapon/armor from your inventory.` \n \n" + 
 										   "**buy <item name>** \n `Buy item from your floor shop.` \n \n" + 
 										   "**sell <item name>** \n `Sell inventory item to shop.` \n \n" +
-										   "**bossfight** \n `Challenge the floor boss to gain access to the next floor.`"
+										   "**tradeitem <item name> <username>** \n `Trade item to another player.` \n \n" +
+										   "**tradecoins <coin amount> <username>** \n `Trade coins to another player.` \n \n" +
+										   "**bossinfo** \n `In-depth info about the floor boss.` \n \n" +
+										   "**bossfight** \n `Challenge the floor boss to gain access to the next floor.` \n \n"  
 			).queue();
 		
 		}
@@ -744,7 +754,43 @@ public class Commands extends ListenerAdapter{
 			
 		}
 		
-		//important: add check for when user is at the top floor with no more accesses to get.
+		if(args[0].equalsIgnoreCase(Main.prefix + "bossinfo") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing)
+			
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			List<Monster> b = mc.selectFloorBoss(play.getFloor());
+			
+			Monster boss = b.get(0);
+			
+			List<Item> bossDrops = new ArrayList<Item>();
+			
+			String bossInfo = "**Floor " + play.getFloor() + " Boss Info:** ``` \n";
+			bossInfo+= "Name: " + boss.getName() + "\n";
+			bossInfo+= "Level: " + boss.getLvl() + "\n";
+			bossInfo += "HP: " + boss.getHp() + "\n";
+			bossInfo += "Att: " + boss.getHp() + "\n";
+			bossInfo += "Def: " + boss.getHp() + "\n Drop(s): \n";
+			
+			bossDrops = ic.selectMonsterDrops(boss);
+			
+			for( int i = 0; i<bossDrops.size(); i++) {
+				bossInfo += "  " + bossDrops.get(i).getName() + ", Rate:  " + bossDrops.get(i).getRate() + "0% \n";
+			}
+			
+			bossInfo += "\n ```";
+			
+			event.getChannel().sendMessage(bossInfo).queue();
+
+			
+			
+		}
+		
 		
 		if(args[0].equalsIgnoreCase(Main.prefix + "bossfight") ) {
 			
@@ -829,13 +875,353 @@ public class Commands extends ListenerAdapter{
 			
 		}
 		
-		
-		
-		
-		
-		
+		if(args[0].equalsIgnoreCase(Main.prefix + "location") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing
 
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			event.getChannel().sendMessage("`Map " + play.getMap() + ", Floor " + play.getFloor() + ".`").queue();
 
+			
+			
+			
+		}
+		
+		if(args[0].equalsIgnoreCase(Main.prefix + "stats") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing
+
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			String statOut = "```";
+			statOut += "Base Att/Def = " + (play.getLvl() + 4) + "\n";
+			statOut += "HP:  " + play.getHp() + "/" + play.getMaxhp() + "\n";
+			statOut += "Att: " + play.getAtt() + "\n";
+			statOut += "Def: " + play.getDef() + "```";
+			
+			event.getChannel().sendMessage(statOut).queue();
+
+			
+			
+			
+		}
+		
+	    if(args[0].equalsIgnoreCase(Main.prefix + "checkitem") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing
+			
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			List<Item> itemCheck = new ArrayList<Item>();
+			
+			if( args.length < 2) {
+				event.getChannel().sendMessage("`Invalid format, please give an item name.`").queue();
+				
+			}
+			else if(args.length == 2){
+				String itemName = args[1];
+				itemCheck = ic.selectInventoryEquip(play, itemName);
+				if( itemCheck.size() == 0) {
+					event.getChannel().sendMessage("`This item is not in your inventory.`").queue();
+
+				}
+				else {
+					Item i = itemCheck.get(0);
+					String itemInfo = "```";
+					itemInfo += "Name: " + i.getName() + "\n";
+					itemInfo += "Type: " + i.getClassification() + "\n";
+					itemInfo += "Worth: " + i.getWorth() + " coins \n";
+					itemInfo += "Drop Rate: " + i.getRate() + "\n";
+					itemInfo += "Heals " + i.getHp() + " hp. ```";
+					event.getChannel().sendMessage(itemInfo).queue();
+				}
+			}
+			else {
+				String itemName = args[1] + " " + args[2];
+				itemCheck = ic.selectInventoryEquip(play, itemName);
+				if( itemCheck.size() == 0) {
+					event.getChannel().sendMessage("`This item is not in your inventory.`").queue();
+
+				}
+				else {
+					Item i = itemCheck.get(0);
+					String itemInfo = "```";
+					itemInfo += "Name: " + i.getName() + "\n";
+					itemInfo += "Type: " + i.getClassification() + "\n";
+					itemInfo += "Worth: " + i.getWorth() + " coins \n";
+					itemInfo += "Drop Rate: " + i.getRate() + "\n";
+					itemInfo += "Level Req.: " + i.getLvl() + "\n";
+					itemInfo += "Att: +" + i.getAtt() + "\n";
+					itemInfo += "Def: +" + i.getDef() + "``` \n";
+					event.getChannel().sendMessage(itemInfo).queue();
+				}
+				
+			}
+			
+	    }
+	    
+	    if(args[0].equalsIgnoreCase(Main.prefix + "coins") ) {
+			
+				event.getChannel().sendTyping().queue(); //pretend bot is typing
+				
+				String id = event.getAuthor().getAvatarId();
+				List<Player> p = new ArrayList<Player>();
+				p = pc.selectPlayer(id); //get player issuing command
+				
+				Player play = p.get(0);
+				
+				event.getChannel().sendMessage("`You have " + play.getMoney() + "$`").queue();
+
+				
+				
+				
+				
+	    }
+	    
+	    if(args[0].equalsIgnoreCase(Main.prefix + "dequip") ) {
+			
+			event.getChannel().sendTyping().queue(); //pretend bot is typing
+			
+			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			if( args.length < 3) {
+				event.getChannel().sendMessage("`Invalid format/item, please provide the name of an item you have equipped.`").queue();
+			}
+			else {
+				String itm = args[1] + " " + args[2];
+				List<Item> haveItem = ic.selectPlayerEquipName(play, itm);
+				if( haveItem.size() == 0) {
+					event.getChannel().sendMessage("`You don't have this item equipped.`").queue();
+
+				}
+				else {
+					Combat c = new Combat();
+					Item cur = haveItem.get(0);
+					int remEq = pc.removePlayerEquip(play, cur);
+					int putBack = pc.updatePlayerInventory(cur, play);
+					List<Item> pe = ic.selectPlayerEquips(play);
+					c.updateStats(play, (ArrayList<Item>) pe);
+					event.getChannel().sendMessage("```Removed: " + cur.getName() + "```").queue();
+
+				}
+			}
+			
+	
+			
+    }
+	    if(args[0].equalsIgnoreCase(Main.prefix + "floorup") ) {
+			
+	 			event.getChannel().sendTyping().queue(); //pretend bot is typing
+	 			
+	 			String id = event.getAuthor().getAvatarId();
+				List<Player> p = new ArrayList<Player>();
+				p = pc.selectPlayer(id); //get player issuing command
+				
+				Player play = p.get(0);
+				
+				List<Boolean> canMove = new ArrayList<Boolean>();
+				
+				canMove.add(play.isFa1());
+				canMove.add(play.isFa2());
+				canMove.add(play.isFa3());
+				canMove.add(play.isFa4());
+				canMove.add(play.isFa5());
+				
+				List<Floor> playerFloor = fc.selectFloor(play.getFloor());
+				Floor f = playerFloor.get(0);
+				
+				
+				if( (play.getFloor()+1) > 5) {
+					event.getChannel().sendMessage("`You are already on the highest floor.`").queue();
+
+				}
+				else if( canMove.get(play.getFloor()) ) {
+					if( play.getMap() == f.getMaps()) {
+						play.setFloor(play.getFloor() + 1);
+						play.setMap(1);
+						int newf = pc.updateFloor(play);
+						event.getChannel().sendMessage("``` You are now on Floor " + play.getFloor() + ". ```").queue();
+					}
+					else {
+						event.getChannel().sendMessage("`You must be on the last map of the floor to move to the next.`").queue();
+
+					}
+					
+				}
+				else {
+					event.getChannel().sendMessage("`You do not have access to the next floor.`").queue();
+				}
+	
+	 			
+	 			
+	    }
+	    
+	    if(args[0].equalsIgnoreCase(Main.prefix + "floordown") ) {
+			
+ 			event.getChannel().sendTyping().queue(); //pretend bot is typing
+ 			
+ 			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			
+			
+			
+			if( (play.getFloor()-1) < 1) {
+				event.getChannel().sendMessage("`You are already on the lowest floor.`").queue();
+
+			}
+			else if(play.getMap() > 1){
+				event.getChannel().sendMessage("`You must be on the first map of the floor to move down.`").queue();
+			}
+			else {
+				List<Floor> playerFloor = fc.selectFloor(play.getFloor()-1);
+				Floor f = playerFloor.get(0);
+				
+				play.setFloor(play.getFloor()-1);
+				play.setMap(f.getMaps());
+				
+				int newf = pc.updateFloor(play);
+
+				event.getChannel().sendMessage("``` You are now on Floor " + play.getFloor() + ". ```").queue();
+				
+			}
+
+ 			
+ 			
+	    }
+	    
+	    if(args[0].equalsIgnoreCase(Main.prefix + "tradeitem") ) {
+			
+ 			event.getChannel().sendTyping().queue(); //pretend bot is typing
+ 			
+ 			if( args.length < 3) {
+				event.getChannel().sendMessage("`Invalid trade, please give the name of an item and the name of the player to trade with.`").queue();
+				return;
+
+ 			}
+ 			
+ 			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			if( args.length == 3) {
+				
+				String it = args[1];
+				List<Item> invItem = ic.selectInventoryEquip(play, it);
+				if( invItem.size() == 0) {
+					event.getChannel().sendMessage("`This item is not in your inventory.`").queue();
+					return;
+				}
+				Item i = invItem.get(0);
+				
+				String user = args[2];
+				p = pc.selectPlayerByUsername(user);
+				
+				if( p.size() == 0) {
+					event.getChannel().sendMessage("`Player you want to trade to doesn't exist.`").queue();
+					return;
+				}
+				
+				Player op = p.get(0); //other player
+				if( play.getFloor() != op.getFloor() || play.getMap() != op.getMap()) {
+					event.getChannel().sendMessage("`To trade you must be on the same floor and map.`").queue();
+					return;
+				}
+				
+				//do the trade
+				int removeInv = pc.removeInventoryItem(i, play);
+				int giveIt = pc.updatePlayerInventory(i, op);
+				
+				event.getChannel().sendMessage("```Transaction Complete: \n  You lost: " + i.getName() + " \n  " + op.getUsername() + " recieved: " + i.getName() + "```").queue();
+				
+
+			}
+ 			
+ 			
+ 			
+	    }
+	    
+	    if(args[0].equalsIgnoreCase(Main.prefix + "tradecoins") ) {
+			
+ 			event.getChannel().sendTyping().queue(); //pretend bot is typing
+ 			
+ 			if( args.length < 3) {
+ 				
+				event.getChannel().sendMessage("`Invalid trade, please give the name the coin amount and the name of the player to trade with.`").queue();
+				return;
+
+ 			}
+ 			
+ 			String id = event.getAuthor().getAvatarId();
+			List<Player> p = new ArrayList<Player>();
+			p = pc.selectPlayer(id); //get player issuing command
+			
+			Player play = p.get(0);
+			
+			String coinAmt = args[1];
+			
+			 try {
+			        int tradeAmt = Integer.parseInt( coinAmt );
+			        if( tradeAmt > play.getMoney() ) {
+						event.getChannel().sendMessage("`You do not have this much money to trade.`").queue();
+						return;
+
+			        }
+			        
+			        String user = args[2];
+					p = pc.selectPlayerByUsername(user);
+					
+					if( p.size() == 0) {
+						event.getChannel().sendMessage("`Player you want to trade to doesn't exist.`").queue();
+						return;
+					}
+					
+					Player op = p.get(0); //other player
+					if( play.getFloor() != op.getFloor() || play.getMap() != op.getMap()) {
+						event.getChannel().sendMessage("`To trade you must be on the same floor and map.`").queue();
+						return;
+					}
+					
+					play.setMoney(play.getMoney() - tradeAmt);
+					op.setMoney(op.getMoney() + tradeAmt);
+					int first = pc.updateMoney(play);
+					int second = pc.updateMoney(op);
+					event.getChannel().sendMessage("```Transaction Complete: \n  You lost: " + tradeAmt + " coins \n  " + op.getUsername() + " recieved: " + tradeAmt + " coins ```").queue();
+
+			        
+			    }
+			 catch( NumberFormatException e ) {
+					event.getChannel().sendMessage("`You entered an invalid coin amount, please use integers i.e. 500.`").queue();
+					return;
+			        
+			 }
+			
+			
+	    }
+		
+		
 		
 	}
 

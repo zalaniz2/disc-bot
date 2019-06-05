@@ -23,6 +23,10 @@ public class FloorService {
 		System.out.println("Getting floor from DB.");
 		return fd.selectFloor(floor);
 	}
+	
+	public List<Floor> selectTopFloor(){
+		return fd.selectTopFloor();
+	}
 
 
 }

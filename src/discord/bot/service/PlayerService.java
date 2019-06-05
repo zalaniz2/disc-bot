@@ -65,6 +65,9 @@ public class PlayerService {
 	public List<Player> selectPlayerByUsername(String name){
 		return pd.selectPlayerByUsername(name);
 	}
+	public int updateFloor(Player p) {
+		return pd.updateFloor(p);
+	}
 
 	
 }

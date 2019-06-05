@@ -25,6 +25,10 @@ public class FloorController {
 		System.out.println("Getting floor " + floor + " info.");
 		return service.selectFloor(floor);
 	}
+	
+	public List<Floor> selectTopFloor(){
+		return service.selectTopFloor();
+	}
 
 
 }

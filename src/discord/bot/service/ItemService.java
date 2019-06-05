@@ -39,6 +39,9 @@ public class ItemService {
 	public List<Item> selectItemFromShop(Player p, String i){
 		return id.selectItemFromShop(p, i);
 	}
+	public List<Item> selectPlayerEquipName(Player p, String name){
+		return id.selectPlayerEquipName(p, name);
+	}
 
 	
 	

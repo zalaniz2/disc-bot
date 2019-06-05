@@ -192,6 +192,18 @@ public class PlayerDao {
 		}
 		
 	}
+	public int updateFloor(Player p) {
+		try {
+			String sql = "UPDATE player SET floor="+ p.getFloor() + ",map=" + p.getMap() + " where id="+p.getId() + ";";   
+			int play = qr.update(sql);
+			return play;
+		} 
+		catch (SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Update player floor exception");
+		}
+		
+	}
 	
 
 }
