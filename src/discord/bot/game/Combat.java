@@ -21,8 +21,6 @@ public class Combat {
 	
 	public boolean fight(Player p, Monster m) {
 		
-		
-		
 		Double playerChance = (double)  1 - ((double) m.getDef() / (double) p.getAtt());
 		Double monsterChance = ((double) 1 -  ( ( (double) p.getDef() / (double) m.getAtt()) ) ) / 2;
 		int playerDamage = p.getAtt() / 2;
@@ -92,9 +90,10 @@ public class Combat {
 		
 	}
 	
-	public void updateExp(Player p, int exp, ArrayList<Levels> lvls) {
+	public String updateExp(Player p, int exp, ArrayList<Levels> lvls, String fightOut) {
 		
 		System.out.println("Exp gain is +" + exp);
+		fightOut += "Gained +" + exp + " exp. \nHP: " + p.getHp() + "/" + p.getMaxhp() + " \n";
 		
 				
 		System.out.println("Player level is " + p.getLvl() + " to next level u need " + lvls.get(0).getExp());
@@ -104,6 +103,7 @@ public class Combat {
 		if ( p.getExp() >= lvls.get(0).getExp()) {
 			System.out.println("Level up!");
 			p.setLvl(p.getLvl() + 1);
+			fightOut += "Leveled up to level " + p.getLvl() + "! \n";
 			p.setExp(0);
 			p.setPercent(0.00);
 			p.setMaxhp(p.getMaxhp() + 1);
@@ -119,12 +119,16 @@ public class Combat {
 			System.out.println("Percentage is %" + pcnt);
 		}
 		
+		return fightOut;
+		
 		
 	}
 	
-	public void updateInventory(Player p, ArrayList<Item> drops, int money) {
+	public String updateInventory(Player p, ArrayList<Item> drops, int money, String fightOut) {
 		
 		Double hit;
+		
+		fightOut += "Gained item(s): \n";
 				
 		System.out.println("Possible items: " + drops.size());
 		
@@ -133,6 +137,7 @@ public class Combat {
 			hit = Math.random();
 			if( hit <= drops.get(i).getRate()) {
 				System.out.println("Got item: " + drops.get(i).getName());
+				fightOut += "  " + drops.get(i).getName() + " \n";
 				int in = pc.updatePlayerInventory(drops.get(i), p);
 			}
 			else {
@@ -145,8 +150,11 @@ public class Combat {
 		System.out.println("Max coins to get: " + money + " coins gotten: " + gain );
 		
 		p.setMoney(p.getMoney() + gain);
+		fightOut += "Coins: " + gain;
 		
 		int add = pc.updateMoney(p);
+		
+		return fightOut;
 		
 	}
 	

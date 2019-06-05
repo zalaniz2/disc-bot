@@ -3,6 +3,7 @@ package discord.bot.controller;
 import java.util.List;
 
 import discord.bot.domain.Monster;
+import discord.bot.domain.Player;
 import discord.bot.service.MonsterService;
 
 public class MonsterController {
@@ -19,6 +20,9 @@ public class MonsterController {
 	}
 	public List<Monster> selectFloorBoss(int floor){
 		return service.selectFloorBoss(floor);
+	}
+	public List<Monster> selectMonsterToFight(Player p, String mon){
+		return service.selectMonsterToFight(p, mon);
 	}
 
 

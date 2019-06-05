@@ -62,6 +62,9 @@ public class PlayerService {
 	public int updateFloorAccess(Player p, String access) {
 		return pd.updateFloorAccess(p, access);
 	}
+	public List<Player> selectPlayerByUsername(String name){
+		return pd.selectPlayerByUsername(name);
+	}
 
 	
 }

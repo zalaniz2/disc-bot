@@ -16,7 +16,7 @@ public class ItemDao {
 	
 	public List<Item> selectPlayerEquips(Player p) {
 		try {
-			String sql = "SELECT i.id, i.name, i.lvl, i.att, i.def, i.type, i.worth, i.classification FROM equip e join item i on e.iid=i.id join player p on e.pid=" + p.getId() + ";";
+			String sql = "SELECT i.id, i.name, i.lvl, i.att, i.def, i.type, i.worth, i.classification FROM equip e join item i on e.iid=i.id where e.pid="+p.getId()+";";
 			List<Item> list = qr.query(sql, new BeanListHandler<>(Item.class));
 			return list;
 		}

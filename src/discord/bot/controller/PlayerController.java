@@ -63,6 +63,9 @@ public class PlayerController {
 	public int updateFloorAccess(Player p, String access) {
 		return service.updateFloorAccess(p, access);
 	}
+	public List<Player> selectPlayerByUsername(String name){
+		return service.selectPlayerByUsername(name);
+	}
 	
 
 	

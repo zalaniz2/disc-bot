@@ -4,6 +4,7 @@ import java.util.List;
 
 import discord.bot.dao.MonsterDao;
 import discord.bot.domain.Monster;
+import discord.bot.domain.Player;
 
 public class MonsterService {
 	
@@ -21,6 +22,10 @@ public class MonsterService {
 	
 	public List<Monster> selectFloorBoss(int floor){
 		return md.selectFloorBoss(floor);
+	}
+	
+	public List<Monster> selectMonsterToFight(Player p, String mon){
+		return md.selectMonsterToFight(p, mon);
 	}
 
 

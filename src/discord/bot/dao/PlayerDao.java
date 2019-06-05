@@ -180,6 +180,18 @@ public class PlayerDao {
 		}
 		
 	}
+	public List<Player> selectPlayerByUsername(String name) {
+		try {
+			String sql = "SELECT * FROM player where username='" + name + "';" ;  
+			List<Player> list = qr.query(sql, new BeanListHandler<>(Player.class));
+			return list;
+		} 
+		catch (SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Check usernames exception");
+		}
+		
+	}
 	
 
 }

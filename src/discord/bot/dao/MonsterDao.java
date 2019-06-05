@@ -8,6 +8,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import discord.bot.domain.Map;
 import discord.bot.domain.Monster;
+import discord.bot.domain.Player;
 import discord.bot.tools.JDBCUtils;
 
 public class MonsterDao {
@@ -49,5 +50,16 @@ public class MonsterDao {
 		}
 	}
 
+	public List<Monster> selectMonsterToFight(Player p, String mon) {
+		try {
+			String sql = "SELECT * FROM monster where floor=" + p.getFloor() + " and map=" + p.getMap() + " and name='" + mon + "';";
+			List<Monster> list = qr.query(sql, new BeanListHandler<>(Monster.class));
+			return list;
+		}
+		catch(SQLException ex) {
+			System.out.println(ex);
+			throw new RuntimeException("Select monster from map to fight exception.");
+		}
+	}
 
 }
