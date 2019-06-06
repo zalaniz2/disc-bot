@@ -253,14 +253,14 @@ public class Commands extends ListenerAdapter{
 			List<Monster> monsters = new ArrayList<Monster>();
 			monsters = mc.selectMonsters(p.get(0).getFloor(), p.get(0).getMap());
 			
-			String monsterInfo = "**Monsters in your map:** ``` \n";
+			String monsterInfo = "``` \n Monsters in your map: \n \n";
 			
 			List<Item> monsterDrops = new ArrayList<Item>();
 			
 			for( int i = 0; i<monsters.size(); i++) {
 				
 				Monster m = monsters.get(i);
-				monsterInfo += " Name: " + m.getName() + "\n Level:   " + m.getLvl() + "\n Attack:  " + m.getAtt() + "\n Defense: " + m.getDef() + "\n HP:      " + m.getHp() + "\n Coins:   " + m.getCoins() + "\n Exp:     " + m.getExp() + "\n Drops: \n";
+				monsterInfo += "Name: " + m.getName() + "\n Level:   " + m.getLvl() + "\n Attack:  " + m.getAtt() + "\n Defense: " + m.getDef() + "\n HP:      " + m.getHp() + "\n Coins:   " + m.getCoins() + "\n Exp:     " + m.getExp() + "\n Drops: \n";
 				monsterDrops = ic.selectMonsterDrops(m);
 				for( int j = 0; j<monsterDrops.size(); j++) {
 					Item drop = monsterDrops.get(j);
@@ -363,10 +363,10 @@ public class Commands extends ListenerAdapter{
 			
 			arm = ic.selectPlayerEquips(p.get(0));
 			
-			String equipInfo = "**Currently Equipped:** ``` \n";
+			String equipInfo = "```\nCurrently Equipped: \n \n";
 			
 			if(arm.size() == 0) {
-				equipInfo += "Nothing. \n \n";
+				equipInfo += " Nothing. \n \n";
 			}
 			else {
 				
@@ -401,10 +401,10 @@ public class Commands extends ListenerAdapter{
 			List<Item> inv = new ArrayList<Item>();
 			inv = ic.selectPlayerItems(p.get(0));
 			
-			String out = "**Inventory:** ``` \n";
+			String out = "``` \nInventory: \n \n";
 			
 			if( inv.size() == 0) {
-				out += "Nothing \n \n";
+				out += " Nothing \n \n";
 			}
 			else {
 				
@@ -691,7 +691,7 @@ public class Commands extends ListenerAdapter{
 			
 			List<Item> shopItems = ic.selectShopItems(play);
 			
-			String shop = "**Floor " + play.getFloor() + " Shop:**  ``` \n";
+			String shop = "``` \nFloor " + play.getFloor() + " Shop: \n \n";
 			
 			for( int i = 0; i<shopItems.size(); i++) {
 				shop+= "Item: " + shopItems.get(i).getName() + "\nCost: " + shopItems.get(i).getWorth() + "\nType: " + shopItems.get(i).getClassification() + " \n";
@@ -863,12 +863,12 @@ public class Commands extends ListenerAdapter{
 			
 			List<Item> bossDrops = new ArrayList<Item>();
 			
-			String bossInfo = "**Floor " + play.getFloor() + " Boss Info:** ``` \n";
+			String bossInfo = "``` \nFloor " + play.getFloor() + " Boss Info: \n \n";
 			bossInfo+= "Name: " + boss.getName() + "\n";
 			bossInfo+= "Level: " + boss.getLvl() + "\n";
 			bossInfo += "HP: " + boss.getHp() + "\n";
-			bossInfo += "Att: " + boss.getHp() + "\n";
-			bossInfo += "Def: " + boss.getHp() + "\n Drop(s): \n";
+			bossInfo += "Att: " + boss.getAtt() + "\n";
+			bossInfo += "Def: " + boss.getDef() + "\n Drop(s): \n";
 			
 			bossDrops = ic.selectMonsterDrops(boss);
 			
@@ -1314,6 +1314,36 @@ public class Commands extends ListenerAdapter{
 				event.getChannel().sendMessage("```Transaction Complete: \n  You lost: " + i.getName() + " \n  " + op.getUsername() + " recieved: " + i.getName() + "```").queue();
 				
 
+			}
+			else {
+				String it = args[1] + " " + args[2];
+				List<Item> invItem = ic.selectInventoryEquip(play, it);
+				if( invItem.size() == 0) {
+					event.getChannel().sendMessage("`This item is not in your inventory.`").queue();
+					return;
+				}
+				Item i = invItem.get(0);
+				
+				String user = args[3];
+				p = pc.selectPlayerByUsername(user);
+				
+				if( p.size() == 0) {
+					event.getChannel().sendMessage("`Player you want to trade to doesn't exist.`").queue();
+					return;
+				}
+				
+				Player op = p.get(0); //other player
+				if( play.getFloor() != op.getFloor() || play.getMap() != op.getMap()) {
+					event.getChannel().sendMessage("`To trade you must be on the same floor and map.`").queue();
+					return;
+				}
+				
+				//do the trade
+				int removeInv = pc.removeInventoryItem(i, play);
+				int giveIt = pc.updatePlayerInventory(i, op);
+				
+				event.getChannel().sendMessage("```Transaction Complete: \n  You lost: " + i.getName() + " \n  " + op.getUsername() + " recieved: " + i.getName() + "```").queue();
+				
 			}
  			
  			

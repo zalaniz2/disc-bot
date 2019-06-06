@@ -22,7 +22,7 @@ public class Combat {
 	public boolean fight(Player p, Monster m) {
 		
 		Double playerChance = (double)  1 - ((double) m.getDef() / (double) p.getAtt());
-		Double monsterChance = ((double) 1 -  ( ( (double) p.getDef() / (double) m.getAtt()) ) ) / 2;
+		Double monsterChance = ( (double) 1 -  ( ( (double) p.getDef() / (double) m.getAtt()) ) ) / 1.5;
 		int playerDamage = p.getAtt() / 2;
 		int monsterDamage = m.getAtt() / 2;
 		Double hit;
