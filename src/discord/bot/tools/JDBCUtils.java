@@ -16,10 +16,10 @@ public class JDBCUtils {
 		datasource.setUrl("jdbc:mysql://localhost:3306/disc?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
 		
 		//username into database
-		datasource.setUsername("discordbot");
+		datasource.setUsername(""); //username to db goes here
 		
 		//db pass
-		datasource.setPassword("mydiscbot225");
+		datasource.setPassword(""); //user password goes here
 		
 		//max # of connections at one time
 		datasource.setMaxActive(10);
